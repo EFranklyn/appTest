@@ -19,16 +19,21 @@ jobs:
         with:
           fetch-depth: 0 # necessário para semantic-release
 
+      # Instala pnpm primeiro
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      # Agora setup-node consegue usar cache para pnpm
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-          run_install: true
+      # Instala dependências
+      - run: pnpm install
 
+      # Release
       - name: Release
         run: npx semantic-release
         env:
