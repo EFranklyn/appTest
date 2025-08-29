@@ -17,18 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # necessário para semantic-release
 
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-          run_install: true    
 
       - uses: pnpm/action-setup@v2
         with:
