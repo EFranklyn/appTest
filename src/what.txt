@@ -1,9 +1,0 @@
-
-
--- **mapa de mesas** (Gerenciamento eficiente de mesas)
-
--- implementar a possibilidade de criar/ editar mesa
--- criar
-
-
-alt col din / native zoom lib
