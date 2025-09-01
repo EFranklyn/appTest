@@ -38,3 +38,4 @@ publish:
   - provider: github
     owner: EFranklyn
     repo: appTest
+    releaseType: release

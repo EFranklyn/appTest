@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
 import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
+
+autoUpdater.logger = log;
+(autoUpdater.logger as any).transports.file.level = 'debug';
+log.info('🚀 App iniciado, logger funcionando!');
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -72,11 +77,26 @@ app.on('ready', () => {
   autoUpdater.checkForUpdatesAndNotify();
 });
 
-autoUpdater.on('update-available', () => {
+autoUpdater.on('checking-for-update', () => {
+  log.info('🔍 verificando updates...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  log.info(`📦 update disponível: ${info.version}`);
   dialog.showMessageBox({
     type: 'info',
     title: 'Update disponível',
     message: 'Uma nova versão foi encontrada, será baixada em segundo plano.',
+  });
+});
+
+autoUpdater.on('update-not-available', () => {
+  log.info('✅ nenhum update disponível.');
+
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update indisponível',
+    message: 'Uma nova versão não foi encontrada.',
   });
 });
 
@@ -93,4 +113,8 @@ autoUpdater.on('update-downloaded', () => {
         autoUpdater.quitAndInstall();
       }
     });
+});
+
+autoUpdater.on('error', (err) => {
+  log.error('❌ erro no autoUpdater:', err);
 });

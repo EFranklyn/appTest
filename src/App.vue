@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import pkg from '../package.json'
+
+const version = pkg.version
 
 
 </script>
@@ -22,6 +25,12 @@
     <q-page-container class="wm">
       <router-view />
     </q-page-container>
+
+    <q-footer class="bg-teal text-yellow">
+      <div class="text-center">
+        <h5 style="margin: 0;">release: v{{ version }}</h5>
+      </div>
+    </q-footer>
   </q-layout>
 </template>
 
