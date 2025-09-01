@@ -28,6 +28,11 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: mv .releaserc.prerelease.yaml .releaserc.yaml
 
+      - name: Build and publish Electron app
+        run: pnpm exec electron-builder --publish always
+        env:
+          GH_TOKEN: ${{ secrets.ELEVATED_GITHUB_TOKEN }}  
+
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
