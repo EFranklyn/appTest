@@ -1,0 +1,40 @@
+# @see - https://www.electron.build/configuration/configuration
+appId: YourAppID
+productName: YourAppName
+asar: true
+
+directories:
+  output: release/${version}
+
+files:
+  - dist
+  - dist-electron
+
+mac:
+  target:
+    - dmg
+  artifactName: "${productName}-Mac-${version}-Installer.${ext}"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: "${productName}-Windows-${version}-Setup.${ext}"
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+
+linux:
+  target:
+    - AppImage
+  artifactName: "${productName}-Linux-${version}.${ext}"
+
+# 🔥 Configuração necessária para o electron-updater funcionar
+publish:
+  - provider: github
+    owner: EFranklyn
+    repo: appTest

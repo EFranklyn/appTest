@@ -1,7 +1,9 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, dialog  } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+
+import { autoUpdater } from 'electron-updater';
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -64,5 +66,31 @@ app.on('activate', () => {
     createWindow()
   }
 })
+app.on('ready', () => {
+  createWindow();
+  // inicia verificação de updates
+  autoUpdater.checkForUpdatesAndNotify();
+});
 
-app.whenReady().then(createWindow)
+autoUpdater.on('update-available', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update disponível',
+    message: 'Uma nova versão foi encontrada, será baixada em segundo plano.',
+  });
+});
+
+autoUpdater.on('update-downloaded', () => {
+  dialog
+    .showMessageBox({
+      type: 'question',
+      buttons: ['Reiniciar agora', 'Depois'],
+      defaultId: 0,
+      message: 'Update baixado. Deseja reiniciar agora para aplicar?',
+    })
+    .then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+});
